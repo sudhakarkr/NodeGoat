@@ -60,7 +60,18 @@ const index = (app, db) => {
      */
 
     // Allocations Page
-    app.get("/allocations/:userId", isLoggedIn, allocationsHandler.displayAllocations);
+    // Fix for CWE-639 (IDOR): enforce that users can only view their own allocations
+    // by overriding any user-supplied :userId with the authenticated session userId.
+    app.get("/allocations/:userId", isLoggedIn, (req, res, next) => {
+        if (!req.session || !req.session.userId) {
+            return res.redirect("/login");
+        }
+        if (String(req.params.userId) !== String(req.session.userId)) {
+            return res.status(403).render("error", { error: "Forbidden: you may only view your own allocations." });
+        }
+        req.params.userId = req.session.userId;
+        return allocationsHandler.displayAllocations(req, res, next);
+    });
 
     // Memos Page
     app.get("/memos", isLoggedIn, memosHandler.displayMemos);
