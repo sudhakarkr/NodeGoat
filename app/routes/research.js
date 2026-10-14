@@ -4,6 +4,15 @@ const {
     environmentalScripts
 } = require("../../config/config");
 
+// Allowlist of permitted upstream base URLs for research lookups.
+const ALLOWED_RESEARCH_URLS = [
+    "https://www.bloomberg.com/markets/quote/",
+    "https://finance.yahoo.com/quote/"
+];
+
+// Only allow conservative stock-symbol characters.
+const SYMBOL_RE = /^[A-Za-z0-9.\-]{1,10}$/;
+
 function ResearchHandler(db) {
     "use strict";
 
@@ -12,7 +21,19 @@ function ResearchHandler(db) {
     this.displayResearch = (req, res) => {
 
         if (req.query.symbol) {
-            const url = req.query.url + req.query.symbol;
+            const baseUrl = req.query.url;
+            const symbol = req.query.symbol;
+
+            if (typeof baseUrl !== "string" || ALLOWED_RESEARCH_URLS.indexOf(baseUrl) === -1) {
+                res.status(400);
+                return res.end("Invalid research URL.");
+            }
+            if (typeof symbol !== "string" || !SYMBOL_RE.test(symbol)) {
+                res.status(400);
+                return res.end("Invalid symbol.");
+            }
+
+            const url = baseUrl + encodeURIComponent(symbol);
             return needle.get(url, (error, newResponse, body) => {
                 if (!error && newResponse.statusCode === 200) {
                     res.writeHead(200, {
