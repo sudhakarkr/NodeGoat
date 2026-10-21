@@ -82,8 +82,14 @@ function UserDAO(db) {
             }
         };
 
+        // Fix for CWE-943 - NoSQL injection
+        // Coerce userName to a primitive string so attackers cannot pass
+        // query operator objects (e.g. {"$gt": ""}) to bypass authentication.
+        if (typeof userName !== "string") {
+            return callback(new Error("Invalid userName"), null);
+        }
         usersCol.findOne({
-            userName: userName
+            userName: String(userName)
         }, validateUserDoc);
     };
 
@@ -95,8 +101,11 @@ function UserDAO(db) {
     };
 
     this.getUserByUserName = (userName, callback) => {
+        if (typeof userName !== "string") {
+            return callback(new Error("Invalid userName"), null);
+        }
         usersCol.findOne({
-            userName: userName
+            userName: String(userName)
         }, callback);
     };
 
