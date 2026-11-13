@@ -71,7 +71,8 @@
       "cookie": "0.7.0"
     },
     "forever": {
-      "decode-uri-component": "0.5.1"
+      "decode-uri-component": "0.5.1",
+      "dot-prop": "5.1.1"
     }
   }
 }
