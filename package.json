@@ -69,6 +69,9 @@
     },
     "express-session": {
       "cookie": "0.7.0"
+    },
+    "forever": {
+      "decode-uri-component": "0.5.1"
     }
   }
 }
