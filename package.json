@@ -76,7 +76,8 @@
       "fsevents": "1.2.11",
       "i": "0.3.7",
       "kind-of": "6.0.3",
-      "mixin-deep": "2.0.1"
+      "mixin-deep": "2.0.1",
+      "set-value": "4.0.1"
     }
   }
 }
