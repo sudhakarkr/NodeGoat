@@ -73,7 +73,8 @@
     "forever": {
       "decode-uri-component": "0.5.1",
       "dot-prop": "5.1.1",
-      "fsevents": "1.2.11"
+      "fsevents": "1.2.11",
+      "i": "0.3.7"
     }
   }
 }
