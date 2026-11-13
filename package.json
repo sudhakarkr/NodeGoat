@@ -63,6 +63,12 @@
   "repository": "https://github.com/OWASP/NodejsGoat",
   "license": "Apache 2.0",
   "overrides": {
-    "swig": "github:sudhakarkr/swig#d8078034ad81db3d47ccdd4eab411ca0c4e930a4"
+    "swig": "github:sudhakarkr/swig#d8078034ad81db3d47ccdd4eab411ca0c4e930a4",
+    "csurf": {
+      "cookie": "0.7.0"
+    },
+    "express-session": {
+      "cookie": "0.7.0"
+    }
   }
 }
