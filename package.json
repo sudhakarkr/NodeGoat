@@ -6,12 +6,12 @@
   "main": "server.js",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^2.3.0",
+    "body-parser": "^2.4.0",
     "consolidate": "^0.14.1",
     "csurf": "^1.8.3",
     "dont-sniff-mimetype": "^1.0.0",
-    "express": "^5.0.0",
-    "express-session": "^1.13.0",
+    "express": "^5.3.0",
+    "express-session": "^1.18.2",
     "forever": "^4.0.3",
     "helmet": "^2.0.0",
     "marked": "^4.0.10",
@@ -63,6 +63,21 @@
   "repository": "https://github.com/OWASP/NodejsGoat",
   "license": "Apache 2.0",
   "overrides": {
-    "swig": "github:sudhakarkr/swig#d8078034ad81db3d47ccdd4eab411ca0c4e930a4"
+    "swig": "github:sudhakarkr/swig#d8078034ad81db3d47ccdd4eab411ca0c4e930a4",
+    "csurf": {
+      "cookie": "0.7.0"
+    },
+    "express-session": {
+      "cookie": "0.7.0"
+    },
+    "forever": {
+      "decode-uri-component": "0.5.1",
+      "dot-prop": "5.1.1",
+      "fsevents": "1.2.11",
+      "i": "0.3.7",
+      "kind-of": "6.0.3",
+      "mixin-deep": "2.0.1",
+      "set-value": "4.0.1"
+    }
   }
 }
