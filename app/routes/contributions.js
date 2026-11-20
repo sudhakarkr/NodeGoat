@@ -36,8 +36,14 @@ function ContributionsHandler(db) {
             userId
         } = req.session;
 
+        // Fail closed on non-numeric input: surface as an error so the
+        // request terminates with a 500 rather than silently continuing.
+        if (isNaN(preTax) || isNaN(afterTax) || isNaN(roth)) {
+            return next(new Error("Invalid contribution values: non-numeric input"));
+        }
+
         //validate contributions
-        const validations = [isNaN(preTax), isNaN(afterTax), isNaN(roth), preTax < 0, afterTax < 0, roth < 0];
+        const validations = [preTax < 0, afterTax < 0, roth < 0];
         const isInvalid = validations.some(validation => validation);
         if (isInvalid) {
             return res.render("contributions", {
