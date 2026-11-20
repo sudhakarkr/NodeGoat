@@ -27,24 +27,23 @@ function ContributionsHandler(db) {
 
     this.handleContributionsUpdate = (req, res, next) => {
 
-        /*jslint evil: true */
-        // Insecure use of eval() to parse inputs
-        const preTax = eval(req.body.preTax);
-        const afterTax = eval(req.body.afterTax);
-        const roth = eval(req.body.roth);
+        // Fix for A1-1 SSJS Injection: parse inputs as integers instead of eval()
+        const preTax = parseInt(req.body.preTax, 10);
+        const afterTax = parseInt(req.body.afterTax, 10);
+        const roth = parseInt(req.body.roth, 10);
 
-        /*
-        //Fix for A1 -1 SSJS Injection attacks - uses alternate method to eval
-        const preTax = parseInt(req.body.preTax);
-        const afterTax = parseInt(req.body.afterTax);
-        const roth = parseInt(req.body.roth);
-        */
         const {
             userId
         } = req.session;
 
+        // Fail closed on non-numeric input: surface as an error so the
+        // request terminates with a 500 rather than silently continuing.
+        if (isNaN(preTax) || isNaN(afterTax) || isNaN(roth)) {
+            return next(new Error("Invalid contribution values: non-numeric input"));
+        }
+
         //validate contributions
-        const validations = [isNaN(preTax), isNaN(afterTax), isNaN(roth), preTax < 0, afterTax < 0, roth < 0];
+        const validations = [preTax < 0, afterTax < 0, roth < 0];
         const isInvalid = validations.some(validation => validation);
         if (isInvalid) {
             return res.render("contributions", {
